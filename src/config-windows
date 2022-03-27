@@ -1,0 +1,10 @@
+{
+  "root": "Y:\\12labour\\datasets\\digitised_lungs",
+  "lung": "left",
+  "split": 0.2,
+  "workers": 4,
+  "batch_size": 32,
+  "feature_transform": "False",
+  "epoch": 5,
+  "output_model": "Y:\\12labour\\segmentation-models"
+}
