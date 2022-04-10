@@ -18,6 +18,28 @@ version with CUDA and PyTorch).
     cd scripts
     bash build.sh  # this will compile and build the 'utils/render.cpp' visualisation code.
 
+Installation
+------------
+Lung Annotator can simply be installed by:
+
+    pip install lung-annotator
+
+Or, if you'd like to contribute to this project, you can clone this repository and in the top-level directory of 
+the cloned repository run `poetry install`. (You can install `poetry` using `pip install poetry`).
+
+
+---
+**NOTE**
+
+For a smooth installation, you can create a Python virtual environment within the ABI's `hpc5`. 
+
+    virtualenv -p python3.9 <venv-name>
+    source <venv-name/bin/activate>
+    pip install lung-annotator
+
+---
+
+
 Training
 ------------
 Simply modify the configuration file in `tests/resources/config` or create your own, and run:
