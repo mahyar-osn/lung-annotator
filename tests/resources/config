@@ -1,10 +1,10 @@
 {
   "root": "/hpc/mosa004/12labour/datasets/digitised_lungs",
   "lung": "left",
-  "split": 0.1,
-  "workers": 4,
-  "batch_size": 64,
+  "split": 0.2,
+  "workers": 6,
+  "batch_size": 32,
   "feature_transform": "False",
-  "epoch": 20,
+  "epoch": 300,
   "output_model": "/hpc/mosa004/12labour/segmentation-models"
 }

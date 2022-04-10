@@ -75,7 +75,6 @@ def train(config: dict, train_loader: DataLoader, test_loader: DataLoader, train
     model = PointNetDenseCls(k=num_classes, feature_transform=config["feature_transform"])
     optimizer = optimiser.Adam(model.parameters(), lr=0.001, betas=(0.9, 0.999))
     scheduler = optimiser.lr_scheduler.StepLR(optimizer, step_size=20, gamma=0.5)
-    # model.cuda()
     model.to(__DEVICE__)
     num_batch = len(train_dataset) // config["batch_size"]
 
@@ -84,7 +83,6 @@ def train(config: dict, train_loader: DataLoader, test_loader: DataLoader, train
         for i, data in enumerate(train_loader, 0):
             points, target = data
             points = points.transpose(2, 1)
-            # points, target = points.cuda(), target.cuda()
             points, target = points.to(__DEVICE__), target.to(__DEVICE__)
             optimizer.zero_grad()
             classifier = model.train()
@@ -105,7 +103,6 @@ def train(config: dict, train_loader: DataLoader, test_loader: DataLoader, train
                 j, data = next(enumerate(test_loader, 0))
                 points, target = data
                 points = points.transpose(2, 1)
-                # points, target = points.cuda(), target.cuda()
                 points, target = points.to(__DEVICE__), target.to(__DEVICE__)
                 classifier = classifier.eval()
                 pred, _, _ = classifier(points)
@@ -124,7 +121,6 @@ def train(config: dict, train_loader: DataLoader, test_loader: DataLoader, train
     for i, data in tqdm(enumerate(test_loader, 0)):
         points, target = data
         points = points.transpose(2, 1)
-        # points, target = points.cuda(), target.cuda()
         points, target = points.to(__DEVICE__), target.to(__DEVICE__)
         classifier = model.eval()
         pred, _, _ = classifier(points)
