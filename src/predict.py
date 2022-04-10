@@ -8,10 +8,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from core.model import PointNetDenseCls
-# from utils.show3d import show_points
+from utils.show3d import show_points
 
 
-__DEVICE__ = "cuda" if torch.cuda.is_available() else "cpu"
+__DEVICE__ = "cpu"
 
 
 class ProgramArguments(object):
@@ -25,15 +25,13 @@ def show(points, prediction):
     cmap = plt.cm.get_cmap("hsv", 10)
     cmap = np.array([cmap(i) for i in range(10)])[:, :3]
     pred_color = cmap[prediction.numpy()[0], :]
-    # show_points(points, c_pred=pred_color)
+    show_points(points, c_pred=pred_color)
 
 
 def main():
     args = parse_args()
     if os.path.exists(args.input_file):
         point_set = np.loadtxt(args.input_file).astype(np.float32)
-        # choice = np.random.choice(len(point_set), 2500, replace=True)
-        # point_set = point_set[choice, :]
         point_set = point_set - np.expand_dims(np.mean(point_set, axis=0), 0)  # center
         dist = np.max(np.sqrt(np.sum(point_set ** 2, axis=1)), 0)
         point_set = point_set / dist  # scale
@@ -47,7 +45,7 @@ def main():
         point = Variable(points.view(1, points.size()[0], points.size()[1]))
         pred, _, _ = classifier(point)
         pred_choice = pred.data.max(2)[1]
-        show(points.numpy(), pred_choice)
+        show(points.numpy().T, pred_choice)
 
 
 def parse_args():
