@@ -1,5 +1,6 @@
 import os
 import argparse
+import warnings
 from sys import platform
 
 import torch
@@ -22,14 +23,11 @@ class ProgramArguments(object):
 
 
 def show_prediction(points, prediction):
-    if platform == "linux" or platform == "linux2":  # Real-time visualisation only supported on Linux for now.
-        from utils.show3d import show_points
-        cmap = plt.cm.get_cmap("hsv", 10)
-        cmap = np.array([cmap(i) for i in range(10)])[:, :3]
-        pred_color = cmap[prediction.numpy()[0], :]
-        show_points(points, c_pred=pred_color)
-    else:
-        raise NotImplementedError("Real-time visualisation is currently only supported on Linux operating systems.")
+    from utils.show3d import show_points
+    cmap = plt.cm.get_cmap("hsv", 10)
+    cmap = np.array([cmap(i) for i in range(10)])[:, :3]
+    pred_color = cmap[prediction.numpy()[0], :]
+    show_points(points, c_pred=pred_color)
 
 
 def save_prediction(points: np.array, prediction: np.array, output_path: str) -> None:
@@ -61,7 +59,10 @@ def main():
         save_prediction(denorm_point_set, pred_choice.numpy(), args.input_file)
 
         # show the prediction (only on linux)
-        show_prediction(points.numpy().T, pred_choice)
+        if platform == "linux" or platform == "linux2":
+            show_prediction(points.numpy().T, pred_choice)
+        else:
+            warnings.warn("NotImplementedError: Real-time visualisation only supported on Linux operating systems.")
 
 
 def parse_args():
